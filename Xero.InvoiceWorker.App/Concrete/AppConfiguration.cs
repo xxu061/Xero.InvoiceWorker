@@ -22,5 +22,6 @@ namespace Xero.InvoiceWorker.App.Concrete
         public int AfterEventId => int.Parse(_configuration["afterEventId"]);
 
         public int MaxPageSize => int.Parse(_configuration["maxPageSize"]);
+        public string TemplateRootPath => _configuration["templateRootPath"];
     }
 }

@@ -50,7 +50,7 @@ namespace Xero.InvoiceWorker.Service.Concrete
             });
         }
 
-        public async Task UpdatePdfInvoice(string invoiceDirectory, Event feedEvent)
+        public async Task UpdatePdfInvoice(string invoiceDirectory, string templateRootPath, Event feedEvent)
         {
             throw new NotImplementedException();
         }

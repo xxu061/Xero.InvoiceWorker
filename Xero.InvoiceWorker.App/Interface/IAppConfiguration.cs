@@ -10,5 +10,6 @@ namespace Xero.InvoiceWorker.App.Interface
         int PageSize { get; }
         int AfterEventId { get; }
         int MaxPageSize { get; }
+        string TemplateRootPath { get; }
     }
 }

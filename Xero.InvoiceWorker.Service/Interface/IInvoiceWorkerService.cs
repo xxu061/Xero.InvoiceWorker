@@ -8,6 +8,7 @@ namespace Xero.InvoiceWorker.Service.Interface
 {
     public interface IInvoiceWorkerService
     {
-        Task<EventFeed> Subscribe(string endpoint, string invoiceDirectory);
+        Task<EventFeed> Subscribe(string endpoint);
+        Task ProcessEventFeedCollection(EventFeed eventFeed, string invoiceDirectory, string templatePath);
     }
 }
