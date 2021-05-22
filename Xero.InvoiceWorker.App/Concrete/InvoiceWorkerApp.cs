@@ -23,7 +23,8 @@ namespace Xero.InvoiceWorker.App
             if (_config.PageSize > _config.MaxPageSize)
                 throw new ArgumentException(string.Format("Page size {0} is greater than max size {1}", _config.PageSize, _config.MaxPageSize));
             _logger.LogInformation("Subscribing to event feed at {0}", _config.InvoiceApiEndpoint);
-            await _service.Subscribe(endPoint + _config.InvoiceApiEndpoint);
+            var eventFeed = await _service.Subscribe(endPoint + _config.InvoiceApiEndpoint);
+            await _service.ProcessEventFeedCollection(eventFeed, invoiceDirectory, _config.TemplateRootPath);
         }
     }
 }

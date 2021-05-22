@@ -22,10 +22,17 @@ namespace Xero.InvoiceWorker.Service.Concrete
 
         public async Task<EventFeed> Subscribe(string endpoint)
         {
-            using (HttpClient client = new HttpClient())
+            if (!string.IsNullOrEmpty(endpoint))
             {
-                var response = await client.GetAsync(endpoint);
-                return JsonConvert.DeserializeObject<EventFeed>(await response.Content.ReadAsStringAsync());
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetAsync(endpoint);
+                    return JsonConvert.DeserializeObject<EventFeed>(await response.Content.ReadAsStringAsync());
+                }
+            }
+            else
+            {
+                throw 
             }
         }
 
