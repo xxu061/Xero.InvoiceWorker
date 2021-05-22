@@ -11,6 +11,6 @@ namespace Xero.InvoiceWorker.Model
         public int ID { get; set; }
         public EventType Type { get; set; }
         public DateTime CreatedDateUtc { get; set; }
-        public EventContent Content { get; set; }
+        public EventItem Content { get; set; }
     }
 }

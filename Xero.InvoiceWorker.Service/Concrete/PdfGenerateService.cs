@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Xero.InvoiceWorker.Model;
+using Xero.InvoiceWorker.Model.Model;
 using Xero.InvoiceWorker.Service.Interface;
 
 namespace Xero.InvoiceWorker.Service.Concrete
@@ -13,25 +14,27 @@ namespace Xero.InvoiceWorker.Service.Concrete
     public class PdfGenerateService : IPdfGenerateService
     {
         private ILogger _logger;
+        private readonly string _invoiceTemplateName = "/InvoiceTemplate.html";
+        private readonly string _lineItemTemplateName = "/LineItemTemplate.html";
         public PdfGenerateService(ILogger logger)
         {
             _logger = logger;
         }
-        public async Task CreatePdfInvoice(string invoiceDirectory, string templatePath, Event feedEvent)
+        public async Task CreatePdfInvoice(string invoiceDirectory, string templateRootPath, Event feedEvent)
         {
 
             if (string.IsNullOrEmpty(invoiceDirectory))
                 throw new ArgumentNullException("invoiceDirectory");
-            if (string.IsNullOrEmpty(templatePath))
+            if (string.IsNullOrEmpty(templateRootPath))
                 throw new ArgumentNullException("templatePath");
             if (feedEvent == null)
                 throw new ArgumentNullException("feedEvent");
 
             using (FileStream pdfDest = File.Open(invoiceDirectory + feedEvent.ID + ".pdf", FileMode.OpenOrCreate))
             {
-                string htmlSource = await File.ReadAllTextAsync(templatePath);
-                string.Format(htmlSource, )
-                HtmlConverter.ConvertToPdf(htmlSource, pdfDest);
+
+                var invoiceHtml = await MapInvoiceModelToTemplate(templateRootPath, feedEvent);
+                HtmlConverter.ConvertToPdf(invoiceHtml, pdfDest);
             }
 
             _logger.LogInformation("Invoice {0} generate at {1}", feedEvent.ID, invoiceDirectory);
@@ -50,6 +53,59 @@ namespace Xero.InvoiceWorker.Service.Concrete
         public async Task UpdatePdfInvoice(string invoiceDirectory, Event feedEvent)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<string> MapInvoiceModelToTemplate(string templateRootPath, Event model)
+        {
+            try
+            {
+                if (model != null)
+                {
+                    var htmlSource = await File.ReadAllTextAsync(templateRootPath + _invoiceTemplateName);
+                    var result = htmlSource.Replace("{Id}", model.ID.ToString())
+                                           .Replace("{Type}", model.Type.ToString())
+                                           .Replace("{Content.Status}", model.Content.Status.ToString())
+                                           .Replace("{Content.DueDateUtc}", model.Content.DueDateUtc.ToString())
+                                           .Replace("{Content.CreatedDateUtc}", model.Content.CreatedDateUtc.ToString())
+                                           .Replace("{Content.UpdatedDateUtc}", model.Content.UpdatedDateUtc.ToString())
+                                           .Replace("{CreatedDateUtc}", model.CreatedDateUtc.ToString())
+                                           .Replace("{LineItems}", await MapLineItemModelToTemplate(templateRootPath, model.Content.LineItems));
+
+                    return result;
+                }
+                else
+                {
+                    throw new NullReferenceException();
+                }
+            }
+            catch(NullReferenceException ex)
+            {
+                _logger.LogError("Invalid invoice data");
+                throw ex;
+            }
+        }
+
+        private async Task<string> MapLineItemModelToTemplate(string templateRootPath, IList<EventLineItem> items)
+        {
+            var htmlSource = await File.ReadAllTextAsync(templateRootPath + _lineItemTemplateName);
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in items)
+            {
+                if (item != null)
+                {
+                    sb.Append(htmlSource.Replace("{LineItemId}", item.LineItemId.ToString())
+                                        .Replace("{Description}", item.Description)
+                                        .Replace("{Quantity}", item.Quantity.ToString())
+                                        .Replace("{UnitCost}", item.UnitCost.ToString())
+                                        .Replace("{LineItemTotalCost}", item.LineItemTotalCost.ToString()));
+                }
+                else
+                {
+                    throw new NullReferenceException();
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
