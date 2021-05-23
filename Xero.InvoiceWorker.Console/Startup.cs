@@ -29,6 +29,7 @@ namespace Xero.InvoiceWorker.Console
             services.AddSingleton(Configuration);
             services.AddSingleton<IInvoiceWorkerApp, InvoiceWorkerApp>();
             services.AddScoped<IInvoiceWorkerService, InvoiceWorkerService>();
+            services.AddScoped<IPdfGenerateService, PdfGenerateService>();
             services.AddSingleton<IAppConfiguration, AppConfiguration>();
         }
     }
