@@ -3,13 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Xero.InvoiceWorker.App;
+using Xero.InvoiceWorker.Console;
 
-namespace Xero.InvoiceWorker.Console
+namespace Xero.InvoiceWorker
 {
     class Program
     {
         static async Task Main(string[] args)
         {
+            
             IServiceCollection services = new ServiceCollection();
 
             Startup startup = new Startup();
@@ -18,9 +20,14 @@ namespace Xero.InvoiceWorker.Console
             IServiceProvider serviceProvider = services.BuildServiceProvider();
             IConfiguration _configuration = startup.Configuration;
 
+            System.Console.WriteLine("Type in the service URL to connect to event feed:");
+            var endpoint = System.Console.ReadLine();
+            System.Console.WriteLine("Type in the file out put directory:");
+            var fileDirectory = System.Console.ReadLine();
+
             // Get Service and call method
             var app = serviceProvider.GetService<IInvoiceWorkerApp>();
-            await app.Subscribe(args[0], args[1]);
+            await app.Subscribe(endpoint, fileDirectory);
         }
     }
 }

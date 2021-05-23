@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,11 +27,12 @@ namespace Xero.InvoiceWorker.Console
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            services.AddSingleton(Configuration);
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IInvoiceWorkerApp, InvoiceWorkerApp>();
             services.AddScoped<IInvoiceWorkerService, InvoiceWorkerService>();
             services.AddScoped<IPdfGenerateService, PdfGenerateService>();
             services.AddSingleton<IAppConfiguration, AppConfiguration>();
+            services.AddSingleton(typeof(ILogger), typeof(Logger<Startup>));
         }
     }
 }

@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.Console", "Xero.InvoiceWorker.Console\Xero.InvoiceWorker.Console.csproj", "{89E01344-CBA9-4CC4-971F-F42531EFADBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xero.InvoiceWorker.Console", "Xero.InvoiceWorker.Console\Xero.InvoiceWorker.Console.csproj", "{89E01344-CBA9-4CC4-971F-F42531EFADBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.Model", "Xero.InvoiceWorker.Model\Xero.InvoiceWorker.Model.csproj", "{6C38527C-4EAD-4AF9-B2E7-09AF6F4E59D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xero.InvoiceWorker.Model", "Xero.InvoiceWorker.Model\Xero.InvoiceWorker.Model.csproj", "{6C38527C-4EAD-4AF9-B2E7-09AF6F4E59D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.App", "Xero.InvoiceWorker.App\Xero.InvoiceWorker.App.csproj", "{0B1B7466-9809-4E3A-B721-C6A414886420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xero.InvoiceWorker.App", "Xero.InvoiceWorker.App\Xero.InvoiceWorker.App.csproj", "{0B1B7466-9809-4E3A-B721-C6A414886420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.Service", "Xero.InvoiceWorker.Service\Xero.InvoiceWorker.Service.csproj", "{C2B2FFD7-086F-43EA-BA34-12551B3332D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xero.InvoiceWorker.Service", "Xero.InvoiceWorker.Service\Xero.InvoiceWorker.Service.csproj", "{C2B2FFD7-086F-43EA-BA34-12551B3332D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.UnitTest", "Xero.InvoiceWorker.UnitTest\Xero.InvoiceWorker.UnitTest.csproj", "{538738B2-E632-46EE-9C34-78CE5D90B465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xero.InvoiceWorker.UnitTest", "Xero.InvoiceWorker.UnitTest\Xero.InvoiceWorker.UnitTest.csproj", "{538738B2-E632-46EE-9C34-78CE5D90B465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xero.InvoiceWorker.Api", "Xero.InvoiceWorker.Api\Xero.InvoiceWorker.Api.csproj", "{98550C4D-7D17-45D0-9BCB-24C28BCAD573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{538738B2-E632-46EE-9C34-78CE5D90B465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538738B2-E632-46EE-9C34-78CE5D90B465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538738B2-E632-46EE-9C34-78CE5D90B465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98550C4D-7D17-45D0-9BCB-24C28BCAD573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98550C4D-7D17-45D0-9BCB-24C28BCAD573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98550C4D-7D17-45D0-9BCB-24C28BCAD573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98550C4D-7D17-45D0-9BCB-24C28BCAD573}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

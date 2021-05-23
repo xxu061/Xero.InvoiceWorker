@@ -95,7 +95,7 @@ namespace Xero.InvoiceWorker.Service.Concrete
             {
                 if (model != null)
                 {
-                    var htmlSource = await File.ReadAllTextAsync(templateRootPath + _invoiceTemplateName);
+                    var htmlSource = await File.ReadAllTextAsync(AppContext.BaseDirectory + templateRootPath + _invoiceTemplateName);
                     var result = htmlSource.Replace("{Id}", model.ID.ToString())
                                            .Replace("{Type}", model.Type.ToString())
                                            .Replace("{Content.Status}", model.Content.Status.ToString())
