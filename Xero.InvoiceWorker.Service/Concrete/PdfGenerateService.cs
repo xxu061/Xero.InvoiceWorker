@@ -22,22 +22,24 @@ namespace Xero.InvoiceWorker.Service.Concrete
         }
         public async Task CreatePdfInvoice(string invoiceDirectory, string templateRootPath, Event feedEvent)
         {
-
-            if (string.IsNullOrEmpty(invoiceDirectory))
-                throw new ArgumentNullException("invoiceDirectory");
-            if (string.IsNullOrEmpty(templateRootPath))
-                throw new ArgumentNullException("templatePath");
-            if (feedEvent == null)
-                throw new ArgumentNullException("feedEvent");
-
-            using (FileStream pdfDest = File.Open(invoiceDirectory + feedEvent.ID + ".pdf", FileMode.OpenOrCreate))
+            try
             {
+                if (ValidateArguments(invoiceDirectory, templateRootPath, feedEvent))
+                {
+                    using (FileStream pdfDest = File.Open(invoiceDirectory + feedEvent.ID + ".pdf", FileMode.OpenOrCreate))
+                    {
 
-                var invoiceHtml = await MapInvoiceModelToTemplate(templateRootPath, feedEvent);
-                HtmlConverter.ConvertToPdf(invoiceHtml, pdfDest);
+                        var invoiceHtml = await MapInvoiceModelToTemplate(templateRootPath, feedEvent);
+                        HtmlConverter.ConvertToPdf(invoiceHtml, pdfDest);
+                    }
+
+                    _logger.LogInformation("Invoice {0} generate at {1}", feedEvent.ID, invoiceDirectory);
+                }
             }
-
-            _logger.LogInformation("Invoice {0} generate at {1}", feedEvent.ID, invoiceDirectory);
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public async Task DeletePdfInvoice(string invoiceDirectory, Event feedEvent)
@@ -45,14 +47,46 @@ namespace Xero.InvoiceWorker.Service.Concrete
             await Task.Run(() =>
             {
                 var path = invoiceDirectory + feedEvent.ID + ".pdf";
-                File.Delete(path);
-                _logger.LogInformation("Invoice at {0} deleted", path);
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    _logger.LogInformation("Invoice at {0} deleted", path);
+                }
+                else
+                {
+                    _logger.LogError("Invoice does not exist at {0}", path);
+                    throw new FileNotFoundException(string.Format("Invoice does not exist at {0}", path));
+                }
             });
         }
 
         public async Task UpdatePdfInvoice(string invoiceDirectory, string templateRootPath, Event feedEvent)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (ValidateArguments(invoiceDirectory, templateRootPath, feedEvent))
+                {
+                    await DeletePdfInvoice(invoiceDirectory, feedEvent);
+                    await CreatePdfInvoice(invoiceDirectory, templateRootPath, feedEvent);
+                    _logger.LogInformation("Invoice {0} updated at {1}", feedEvent.ID, invoiceDirectory);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        private bool ValidateArguments(string invoiceDirectory, string templateRootPath, Event feedEvent)
+        {
+            if (string.IsNullOrEmpty(invoiceDirectory))
+                throw new ArgumentNullException("invoiceDirectory");
+            if (string.IsNullOrEmpty(templateRootPath))
+                throw new ArgumentNullException("templatePath");
+            if (feedEvent == null)
+                throw new ArgumentNullException("feedEvent");
+
+            return true;
         }
 
         private async Task<string> MapInvoiceModelToTemplate(string templateRootPath, Event model)
@@ -78,7 +112,7 @@ namespace Xero.InvoiceWorker.Service.Concrete
                     throw new NullReferenceException();
                 }
             }
-            catch(NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
                 _logger.LogError("Invalid invoice data");
                 throw ex;

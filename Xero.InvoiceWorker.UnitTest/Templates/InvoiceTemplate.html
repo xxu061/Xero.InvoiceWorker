@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>ID:</td>
+                    <td>{Id}</td>
+                </tr>
+                <tr>
+                    <td>Type:</td>
+                    <td>{Type}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{Content.Status}</td>
+                </tr>
+                <tr>
+                    <td>Due Date:</td>
+                    <td>{Content.DueDateUtc}</td>
+                </tr>
+                <tr>
+                    <td>Content Created Date:</td>
+                    <td>{Content.CreatedDateUtc}</td>
+                </tr>
+                <tr>
+                    <td>Updated Date:</td>
+                    <td>{Content.UpdatedDateUtc}</td>
+                </tr>
+                <tr>
+                    <td>Invoice Created Date:</td>
+                    <td>{CreatedDateUtc}</td>
+                </tr>
+                {LineItems}
+            </tbody>
+        </table>
+    </div>
+ </body>
+</html>

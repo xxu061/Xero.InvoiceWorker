@@ -19,4 +19,19 @@
     <ProjectReference Include="..\Xero.InvoiceWorker.App\Xero.InvoiceWorker.App.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Templates\InvoiceTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Templates\LineItemTemplate.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestPayloadOutput\testPDF.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestPayload\EventFeed.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
